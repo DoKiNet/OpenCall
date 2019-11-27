@@ -3,4 +3,23 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.0"
+BUILD="0.1.1"
+
+if [[ $EUID -ne 0 ]]; then
+    echo "OpenCall requires root privileges"
+    exit 1
+fi
+
+if [ "$ARG1" == "install" ] && [ "$ARG2" == "server" ]; then
+source /etc/os-release
+
+    if [ "$ID" == "debian" ]; then
+
+        echo -e "\nDebian - OpenCall Server - Installation\n"
+        sleep 1
+
+        
+    else
+        echo -e "\nOS NOT SUPPORTED\n"
+    fi
+fi
