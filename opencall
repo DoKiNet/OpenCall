@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.1"
+BUILD="0.1.2"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -13,12 +13,40 @@ fi
 if [ "$ARG1" == "install" ] && [ "$ARG2" == "server" ]; then
 source /etc/os-release
 
-    if [ "$ID" == "debian" ]; then
+    if [ "$ID" == "debian" ] && [ "$VERSION_ID" == "9" ]; then
 
         echo -e "\nDebian - OpenCall Server - Installation\n"
         sleep 1
 
-        
+        apt -y install asterisk asterisk-opus openssl
+        mkdir -p /etc/opencall
+        cp ./opencall /bin/opencall
+
+        ######### BEGIN - SELF SIGNED CERTIFICATE CREATION ########
+
+        ######### END - SELF SIGNED CERTIFICATE CREATION ########
+
+
+        ######### BEGIN - /ETC/ASTERISK/HTTP.CONF CONFIGURATION ########
+
+        ######### END - /ETC/ASTERISK/HTTP.CONF CONFIGURATION ########
+
+
+        ######### BEGIN - /ETC/ASTERISK/PJSIP.CONF CONFIGURATION ########
+
+        ######### END - /ETC/ASTERISK/PJSIP.CONF CONFIGURATION ########
+
+
+        ######### BEGIN - /ETC/ASTERISK/SIP.CONF CONFIGURATION ########
+
+        ######### END - /ETC/ASTERISK/SIP.CONF CONFIGURATION ########
+
+
+        ######### BEGIN - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
+
+        ######### END - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
+
+
     else
         echo -e "\nOS NOT SUPPORTED\n"
     fi
