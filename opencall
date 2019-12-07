@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.2"
+BUILD="0.1.3"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -15,7 +15,7 @@ source /etc/os-release
 
     if [ "$ID" == "debian" ] && [ "$VERSION_ID" == "9" ]; then
 
-        echo -e "\nDebian - OpenCall Server - Installation\n"
+        echo -e "\nOpenCall Server - Debian 9 - Installation\n"
         sleep 1
 
         apt -y install asterisk asterisk-opus openssl
@@ -23,7 +23,24 @@ source /etc/os-release
         cp ./opencall /bin/opencall
 
         ######### BEGIN - SELF SIGNED CERTIFICATE CREATION ########
+        mkdir -p /etc/asterisk/keys
 
+        echo -e "\n\n\n<-- Self Signed SSL Certificate Creation -->\n"
+        echo -en "Insert Server IP Address or Domain Name\n[e.g. 192.168.1.100 or example.com]: "
+        read SERVER_ADDRESS
+
+        openssl req -x509 -newkey rsa:4096 -keyout /etc/asterisk/keys/key.pem \
+                -out /etc/asterisk/keys/cert.pem -days 365 \
+                -nodes -subj '/CN=$SERVER_ADDRESS'
+        cat /etc/asterisk/keys/key.pem > /etc/asterisk/keys/asterisk.pem
+        cat /etc/asterisk/keys/cert.pem >> /etc/asterisk/keys/asterisk.pem
+        rm /etc/asterisk/keys/key.pem
+        rm /etc/asterisk/keys/cert.pem
+
+        echo "SERVER_ADDRESS=$SERVER_ADDRESS" > /etc/opencall/opencall.conf
+
+        echo -e "\n\nSELF SIGNED CERTIFICATE CREATED: $SERVER_ADDRESS\n\n"
+        sleep 1
         ######### END - SELF SIGNED CERTIFICATE CREATION ########
 
 
@@ -43,7 +60,7 @@ source /etc/os-release
 
 
         ######### BEGIN - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
-
+        #disable chan_sip.so
         ######### END - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
 
 
