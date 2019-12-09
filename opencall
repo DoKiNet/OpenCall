@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.6"
+BUILD="0.1.7"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -41,7 +41,7 @@ source /etc/os-release
         echo "SERVER_ADDRESS=$SERVER_ADDRESS" > /etc/opencall/opencall.conf
 
         echo -e "\n\nSELF SIGNED CERTIFICATE CREATED: $SERVER_ADDRESS\n\n"
-        sleep 1
+
         ######### END - SELF SIGNED CERTIFICATE CREATION ########
 
 
@@ -80,6 +80,16 @@ source /etc/os-release
 
         ######### BEGIN - /ETC/ASTERISK/PJSIP.CONF CONFIGURATION ########
 
+        sed -i '/;BOB/,/;EOB/d' /etc/asterisk/pjsip.conf
+
+        cat >> /etc/asterisk/pjsip.conf << EOF
+;BOB
+[transport-wss]
+type=transport
+protocol=wss
+bind=0.0.0.0
+;EOB
+EOF
         ######### END - /ETC/ASTERISK/PJSIP.CONF CONFIGURATION ########
 
 
@@ -113,13 +123,19 @@ source /etc/os-release
         sed -i '/;tlsdontverifyserver=/ c tlsdontverifyserver=yes' /etc/asterisk/sip.conf
         sed -i '/^tlsdontverifyserver=/ c tlsdontverifyserver=yes' /etc/asterisk/sip.conf
 
-
         ######### END - /ETC/ASTERISK/SIP.CONF CONFIGURATION ########
 
 
         ######### BEGIN - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
+
         #disable chan_sip.so
+        sed -i '/load => chan_sip.so/ c noload => chan_sip.so' /etc/asterisk/modules.conf
+
         ######### END - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
+
+
+
+        systemctl restart asterisk
 
     ############# END - OpenCall Server - DEBIAN INSTALLATION ###############
 
