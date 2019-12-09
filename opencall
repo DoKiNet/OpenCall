@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.4"
+BUILD="0.1.5"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -13,9 +13,10 @@ fi
 if [ "$ARG1" == "install" ] && [ "$ARG2" == "server" ]; then
 source /etc/os-release
 
-    if [ "$ID" == "debian" ] && [ "$VERSION_ID" == "9" ]; then
+    ############# BEGIN - OpenCall Server - DEBIAN INSTALLATION ###############
+    if [ "$ID" == "debian" ] && [ "$VERSION_ID" == "9" -o "$VERSION_ID" == "10" ]; then
 
-        echo -e "\nOpenCall Server - Debian 9 - Installation\n"
+        echo -e "\nOpenCall Server - Debian $VERSION_ID - Installation\n"
         sleep 1
 
         apt -y install asterisk asterisk-opus openssl
@@ -91,6 +92,7 @@ source /etc/os-release
         #disable chan_sip.so
         ######### END - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
 
+    ############# END - OpenCall Server - DEBIAN INSTALLATION ###############
 
     else
         echo -e "\nOS NOT SUPPORTED\n"
