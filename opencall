@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.7"
+BUILD="0.1.8"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -32,7 +32,7 @@ source /etc/os-release
 
         openssl req -x509 -newkey rsa:4096 -keyout /etc/asterisk/keys/key.pem \
                 -out /etc/asterisk/keys/cert.pem -days 365 \
-                -nodes -subj '/CN=$SERVER_ADDRESS'
+                -nodes -subj "/CN=$SERVER_ADDRESS"
         cat /etc/asterisk/keys/key.pem > /etc/asterisk/keys/asterisk.pem
         cat /etc/asterisk/keys/cert.pem >> /etc/asterisk/keys/asterisk.pem
         rm /etc/asterisk/keys/key.pem
