@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.3"
+BUILD="0.1.4"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -45,6 +45,34 @@ source /etc/os-release
 
 
         ######### BEGIN - /ETC/ASTERISK/HTTP.CONF CONFIGURATION ########
+
+        #enabled=yes
+        sed -i '/;enabled=/ c enabled=yes' /etc/asterisk/http.conf
+        sed -i '/^enabled=/ c enabled=yes' /etc/asterisk/http.conf
+
+        #bindaddr=0.0.0.0
+        sed -i '/;bindaddr=/ c bindaddr=0.0.0.0' /etc/asterisk/http.conf
+        sed -i '/^bindaddr=/ c bindaddr=0.0.0.0' /etc/asterisk/http.conf
+
+        #bindport=8088
+        sed -i '/;bindport=/ c bindport=8088' /etc/asterisk/http.conf
+        sed -i '/^bindport=/ c bindport=8088' /etc/asterisk/http.conf
+
+        #tlsenable=yes
+        sed -i '/;tlsenable=/ c tlsenable=yes' /etc/asterisk/http.conf
+        sed -i '/^tlsenable=/ c tlsenable=yes' /etc/asterisk/http.conf
+
+        #tlsbindaddr=0.0.0.0:8089
+        sed -i '/;tlsbindaddr=/ c tlsbindaddr=0.0.0.0:8089' /etc/asterisk/http.conf
+        sed -i '/^tlsbindaddr=/ c tlsbindaddr=0.0.0.0:8089' /etc/asterisk/http.conf
+
+        #tlscertfile=/etc/asterisk/keys/asterisk.pem
+        sed -i '/;tlscertfile=/ c tlscertfile=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/http.conf
+        sed -i '/^tlscertfile=/ c tlscertfile=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/http.conf
+
+        #tlsprivatekey=/etc/asterisk/keys/asterisk.pem
+        sed -i '/;tlsprivatekey=/ c tlsprivatekey=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/http.conf
+        sed -i '/^tlsprivatekey=/ c tlsprivatekey=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/http.conf
 
         ######### END - /ETC/ASTERISK/HTTP.CONF CONFIGURATION ########
 
