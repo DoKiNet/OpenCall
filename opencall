@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.5"
+BUILD="0.1.6"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -84,6 +84,35 @@ source /etc/os-release
 
 
         ######### BEGIN - /ETC/ASTERISK/SIP.CONF CONFIGURATION ########
+
+        #tlsenable=yes
+        sed -i '/;tlsenable=/ c tlsenable=yes' /etc/asterisk/sip.conf
+        sed -i '/^tlsenable=/ c tlsenable=yes' /etc/asterisk/sip.conf
+
+        #tlsbindaddr=0.0.0.0:5061
+        sed -i '/;tlsbindaddr=/ c tlsbindaddr=0.0.0.0:5061' /etc/asterisk/sip.conf
+        sed -i '/^tlsbindaddr=/ c tlsbindaddr=0.0.0.0:5061' /etc/asterisk/sip.conf
+
+        #videosupport=yes
+        sed -i '/;videosupport=/ c videosupport=yes' /etc/asterisk/sip.conf
+        sed -i '/^videosupport=/ c videosupport=yes' /etc/asterisk/sip.conf
+
+        #textsupport=yes
+        sed -i '/;textsupport=/ c textsupport=yes' /etc/asterisk/sip.conf
+        sed -i '/^textsupport=/ c textsupport=yes' /etc/asterisk/sip.conf
+
+        #tlscertfile=/etc/asterisk/keys/asterisk.pem
+        sed -i '/;tlscertfile=/ c tlscertfile=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/sip.conf
+        sed -i '/^tlscertfile=/ c tlscertfile=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/sip.conf
+
+        #tlsprivatekey=/etc/asterisk/keys/asterisk.pem
+        sed -i '/;tlsprivatekey=/ c tlsprivatekey=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/sip.conf
+        sed -i '/^tlsprivatekey=/ c tlsprivatekey=/etc/asterisk/keys/asterisk.pem' /etc/asterisk/sip.conf
+
+        #tlsdontverifyserver=yes
+        sed -i '/;tlsdontverifyserver=/ c tlsdontverifyserver=yes' /etc/asterisk/sip.conf
+        sed -i '/^tlsdontverifyserver=/ c tlsdontverifyserver=yes' /etc/asterisk/sip.conf
+
 
         ######### END - /ETC/ASTERISK/SIP.CONF CONFIGURATION ########
 
