@@ -3,7 +3,7 @@
 ARG1=$1
 ARG2=$2
 VERSION="0.1"
-BUILD="0.1.8"
+BUILD="0.1.9"
 
 if [[ $EUID -ne 0 ]]; then
     echo "OpenCall requires root privileges"
@@ -88,6 +88,16 @@ source /etc/os-release
 type=transport
 protocol=wss
 bind=0.0.0.0
+
+[transport-udp]
+type=transport
+protocol=udp
+bind=0.0.0.0
+
+[transport-tls]
+type=transport
+protocol=tls
+bind=0.0.0.0
 ;EOB
 EOF
         ######### END - /ETC/ASTERISK/PJSIP.CONF CONFIGURATION ########
@@ -129,7 +139,8 @@ EOF
         ######### BEGIN - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
 
         #disable chan_sip.so
-        sed -i '/load => chan_sip.so/ c noload => chan_sip.so' /etc/asterisk/modules.conf
+        sed -i '/load => chan_sip.so/d' /etc/asterisk/modules.conf
+        sed -i  '9 a noload => chan_sip.so' /etc/asterisk/modules.conf
 
         ######### END - /ETC/ASTERISK/MODULES.CONF CONFIGURATION ########
 
